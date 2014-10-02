@@ -51,7 +51,12 @@ exports.isUrlInList = function(target, callback){
   });
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(newURL){
+  fs.appendFile('../archives/sites.txt', newURL+'\n', function(error){
+    if (error){
+      throw error;
+    }
+  });
 };
 
 exports.isURLArchived = function(){

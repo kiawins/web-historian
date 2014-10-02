@@ -47,11 +47,14 @@ exports.handleRequest = function (req, res) {
           });
           console.log("after readFile");
         } else {
-
+          archive.addUrlToList(inputURL);
+          fs.readFile('./public/loading.html', 'binary', function(error, file){
+            res.writeHead(200, helpers.headers);
+            res.write(file, 'binary');
+            res.end();
+          });
         }
       });
-      // res.writeHead(200, helpers.headers);
-      // res.end();
     });
   }
 };
