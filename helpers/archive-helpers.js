@@ -26,10 +26,6 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(){
-};
-
-exports.isUrlInList = function(target){
-  console.log("inside is url in the list");
   var options = {
     encoding: 'utf8'
   };
@@ -40,16 +36,37 @@ exports.isUrlInList = function(target){
   }
 
   return reading(function(error,data){
-    console.log("inside reading!");
-    var result;
-    var list = data.split("\n");
-    if (list.indexOf(target) === -1) {
-      result = false;
-    } else {
-      result = true;
-    }
-    console.log(result);
+    return data;
   });
+};
+
+exports.callback = function(func, args) {
+  func(args);
+};
+
+exports.isUrlInList = function(target){
+  var checking = function(callback) {
+
+    //nest readListOfUrls in callback
+    //follow comments on line 60
+
+    var list = exports.readListOfUrls().split("\n");
+    callback(list);
+  };
+  checking(function(list) {
+    console.log("inside checking");
+    console.log(list);
+  });
+  // return reading(function(error,data){
+  //   var result;
+  //   var list = data.split("\n");
+  //   if (list.indexOf(target) === -1) {
+  //     result = false;
+  //   } else {
+  //     result = true;
+  //   }
+  //   return result;
+  // });
 };
 
 exports.addUrlToList = function(){

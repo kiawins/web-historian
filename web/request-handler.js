@@ -29,8 +29,8 @@ exports.handleRequest = function (req, res) {
     });
     req.on('end', function() {
       var inputURL = body.slice(4);
-      // var checkURL = function(callback, target) {
-      //   callback(target);
+      // var callback = function(func, args) {
+      //   func(args);
       // };
       // console.log(checkURL(archive.isUrlInList, inputURL));
       // var checkURL = function(callback) {
