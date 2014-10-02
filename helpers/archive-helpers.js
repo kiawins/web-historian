@@ -25,48 +25,30 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+exports.readListOfUrls = function(callback){
+  // console.log('inside read list of urls');
   var options = {
     encoding: 'utf8'
   };
-  var reading = function(callback){
-    fs.readFile('../archives/sites.txt', options, function(error, data) {
-      callback(error, data);
-    });
-  }
-
-  return reading(function(error,data){
-    return data;
+  fs.readFile('../archives/sites.txt', options, function doneReading(error, data) {
+    // console.log('FSRF');
+    callback(error, data);
   });
 };
 
-exports.callback = function(func, args) {
-  func(args);
-};
-
-exports.isUrlInList = function(target){
-  var checking = function(callback) {
-
-    //nest readListOfUrls in callback
-    //follow comments on line 60
-
-    var list = exports.readListOfUrls().split("\n");
-    callback(list);
-  };
-  checking(function(list) {
-    console.log("inside checking");
-    console.log(list);
+exports.isUrlInList = function(target, callback){
+  // console.log('inside is url in list');
+  exports.readListOfUrls(function checkData(error, data) {
+    var list = data.split("\n");
+    var result;
+    if (list.indexOf(target) === -1) {
+      result = false;
+    } else {
+      result = true;
+    }
+    // console.log(result);
+    callback(result);
   });
-  // return reading(function(error,data){
-  //   var result;
-  //   var list = data.split("\n");
-  //   if (list.indexOf(target) === -1) {
-  //     result = false;
-  //   } else {
-  //     result = true;
-  //   }
-  //   return result;
-  // });
 };
 
 exports.addUrlToList = function(){

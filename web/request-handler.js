@@ -15,6 +15,13 @@ exports.handleRequest = function (req, res) {
       res.end();
     });
   }
+  if (pathname === '/public/styles.css' && req.method ==="GET"){
+    fs.readFile('./public/styles.css', 'binary', function(error, file){
+      res.writeHead(200, helpers.headers);
+      res.write(file, 'binary');
+      res.end();
+    });
+  }
   if (pathname === '/styles.css' && req.method ==="GET"){
     fs.readFile('./public/styles.css', 'binary', function(error, file){
       res.writeHead(200, helpers.headers);
@@ -29,22 +36,22 @@ exports.handleRequest = function (req, res) {
     });
     req.on('end', function() {
       var inputURL = body.slice(4);
-      // var callback = function(func, args) {
-      //   func(args);
-      // };
-      // console.log(checkURL(archive.isUrlInList, inputURL));
-      // var checkURL = function(callback) {
-      //   console.log("inside checkURL");
-      //   var result = archive.isUrlInList(inputURL);
-      //   callback(result);
-      // };
-      // checkURL(function(result) {
-      //   console.log("inside callback");
-      //   console.log(result);
-      // });
-      archive.isUrlInList(inputURL);
-      res.writeHead(200, helpers.headers);
-      res.end();
+      archive.isUrlInList(inputURL, function(result) {
+        if (result) {
+          console.log("before readFile");
+          fs.readFile('../archives/sites/'+inputURL, 'binary', function(error, file){
+            console.log("inside readFile");
+            res.writeHead(200, helpers.headers);
+            res.write(file, 'binary');
+            res.end();
+          });
+          console.log("after readFile");
+        } else {
+
+        }
+      });
+      // res.writeHead(200, helpers.headers);
+      // res.end();
     });
   }
 };
